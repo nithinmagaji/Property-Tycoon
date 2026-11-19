@@ -1,33 +1,46 @@
-# Property Tycoon Advanced (v2)
+# Property Tycoon Advanced — Phase 3
 
-A four-seat, single-page property strategy game: one human player and three AI opponents. Built with vanilla HTML/CSS/JavaScript and no dependencies, API keys, server or build process.
+Monopoly-inspired browser game (original board and branding). Phase 3 adds internet multiplayer, official-style rules, animated movement, inline property purchases, financial reports, themes, avatars, soundtrack/SFX, and optional cloud saves via the companion server.
 
-## Phase 2 features
-- Full 40-space custom property board and four always-filled seats.
-- Three AI styles: balanced, builder and trader; easy/normal/hard difficulty setting.
-- Property purchase and competitive auctions.
-- Rent rules for colour groups, stations, utilities, houses and hotels.
-- Even house building, hotel upgrades, selling buildings.
-- Mortgages and redemption; automatic liquidation to cover debts; bankruptcy and asset transfers.
-- Human-to-AI cash-for-property negotiation.
-- Chance and Community Fund events, taxes, Free Parking jackpot toggle.
-- Animated dice, token movement, sound effects toggle and responsive mobile layout.
-- Match statistics: rolls, buys, auctions, trades, construction, mortgages, rent, taxes and bankruptcies.
-- Manual save, autosave, resume, JSON export and import.
-- Configurable starting cash, difficulty, auction and Free Parking settings.
+## Phase 3 highlights
 
-## Play locally
-Open `index.html` in a modern browser.
+- **Multiplayer:** Host/join rooms over WebSocket (`server/`). Non-active seats are locked while others roll or buy.
+- **Purchase UI:** No purchase popup — decisions appear in the **Purchase** panel; controls blocked for other players during decisions.
+- **Board centre:** Roll and End turn live inside the board so movement is visible beside the dice.
+- **Official-style rules:** Doubles (three doubles → Jail), Jail bail/cards/three turns, 32 houses / 12 hotels, even building, mortgaged sets block building, income tax $200 or 10%, Chance & Community decks, railroad/utility rents.
+- **Polish:** Step-by-step token animation, 3D-styled dice, build pulse, ambient soundtrack + SFX, themes (classic/midnight/neon), avatars.
+- **Security:** CSP on the client, sanitized multiplayer names, size limits and save tokens on the server, no `eval` or remote scripts.
 
-## Deploy free on GitHub Pages
-1. Create a GitHub repository (for example `property-tycoon`).
-2. Upload `index.html` and `README.md` to the repository root.
-3. Go to Settings → Pages.
-4. Choose Deploy from a branch, branch `main`, folder `/(root)`, then Save.
-5. Open the GitHub Pages URL after deployment completes.
+## Play locally (vs AI)
 
-## Persistence
-Autosave uses browser localStorage on the same device/browser. Use Export save to back up or move a game to another device, then Import save there. GitHub Pages is static hosting; it does not provide cross-device cloud saves.
+**Do not double-click `index.html`** — ES modules require HTTP. From the project folder:
 
-## Important
-This is an original Monopoly-inspired game, not an official Hasbro product and does not reproduce the official Monopoly board/artwork. It is a playable advanced prototype; economic rules are simplified and may be tuned further.
+```bash
+npm start
+```
+
+Then open **http://localhost:3000** in your browser.
+
+## Online multiplayer
+
+```bash
+cd server && npm install && npm start
+```
+
+Default WebSocket URL: `ws://localhost:8787`. In the game, click **Multiplayer** → **Host room** or **Join room**. Share the 6-character room code. The host’s game state is synced to other clients. Use **Cloud sync** (with a valid room token) to store/load a snapshot on the server.
+
+For production, terminate TLS and use `wss://` on your domain; set the server URL in the multiplayer dialog.
+
+## Saves
+
+- **Local:** Autosave / Save / Resume (`localStorage`).
+- **Portable:** Export / Import JSON.
+- **Cloud:** Requires an active multiplayer room (per-room save token).
+
+## Deploy static client (e.g. GitHub Pages)
+
+Upload the repo root (`index.html`, `css/`, `js/`, `README.md`). Pages serves static files only — run the WebSocket server elsewhere and point clients at your `wss://` URL.
+
+## Note
+
+This is not an official Hasbro Monopoly product. Rules follow widely used Monopoly mechanics on an original city-themed board.
